@@ -5,6 +5,8 @@ const TopBar = ({ sidebarVisible, toggleSidebar, selectedMenuItem }) => {
         switch (selectedMenuItem) {
             case 'Department':
                 return 'Manage Department';
+            case 'Doctor':
+                return 'Manage Doctor';
             case 'Home':
             default:
                 return 'Admin Dashboard';

@@ -3,19 +3,22 @@ import { IoPersonSharp, IoSettingsSharp, IoHelpCircleSharp, IoLogOutSharp, IoNot
 import photo from '../../login/about.png';
 import american from '../photos/american.png';
 import palestine from '../photos/palestine.png';
-import { CgProfile } from "react-icons/cg";
+import { MdOutlinePersonAddAlt } from "react-icons/md";
 
 const HeaderMain = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [languageDropdownVisible, setLanguageDropdownVisible] = useState(false);
-  const [notificationDropdownVisible, setNotificationDropdownVisible] = useState(false); // State to track notification dropdown visibility
-  const [currentLanguage, setCurrentLanguage] = useState('English'); // State to track the current language
+  const [notificationDropdownVisible, setNotificationDropdownVisible] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState('English');
+  const [activeNotification, setActiveNotification] = useState(null); // State to track active notification
+  const [activePersonal, setActivePersonal] = useState(false); // State to track active personal icon
   const dropdownRef = useRef(null);
   const languageDropdownRef = useRef(null);
-  const notificationDropdownRef = useRef(null); // Ref for notification dropdown
+  const notificationDropdownRef = useRef(null);
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
+    setActivePersonal(!activePersonal); // Toggle active personal icon
   };
 
   const toggleLanguageDropdown = () => {
@@ -29,6 +32,7 @@ const HeaderMain = () => {
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setDropdownVisible(false);
+      setActivePersonal(false); // Deactivate personal icon
     }
     if (languageDropdownRef.current && !languageDropdownRef.current.contains(event.target)) {
       setLanguageDropdownVisible(false);
@@ -41,6 +45,10 @@ const HeaderMain = () => {
   const changeLanguage = (language) => {
     setCurrentLanguage(language);
     setLanguageDropdownVisible(false);
+  };
+
+  const handleNotificationClick = (notificationId) => {
+    setActiveNotification(notificationId);
   };
 
   useEffect(() => {
@@ -75,41 +83,54 @@ const HeaderMain = () => {
           </div>
         )}
         <div className="headerMain-notificationIcon" onClick={toggleNotificationDropdown}>
-          <IoNotificationsSharp />
+          <IoNotificationsSharp style={{ color: notificationDropdownVisible ? 'rgb(0, 200, 255)' : 'inherit' }} />
         </div>
         {notificationDropdownVisible && (
           <div className="dropdownMenuHeader notificationDropdown" ref={notificationDropdownRef}>
             <div className="dropdownHeaderHeader">
-            <IoNotificationsSharp  />   Notifications
+              <IoNotificationsSharp /> Notifications
             </div>
             <hr className="hrHeader" />
-            <div className="notificationItem">
-              <IoPersonSharp className="notificationIcon" />
+            <div
+              className="notificationItem"
+              onClick={() => handleNotificationClick('message')}
+              style={{ color: activeNotification === 'message' ? 'blue' : 'inherit' }}
+            >
+              <IoPersonSharp className="notificationIcon" style={{ color: activeNotification === 'message' ? 'blue' : 'inherit' }} />
               <div className="notificationContent">
                 <span className="notificationText">New message from John Doe</span>
                 <span className="notificationTime">2 mins ago</span>
               </div>
             </div>
-            <div className="notificationItem">
-              <IoSettingsSharp className="notificationIcon" />
+            <div
+              className="notificationItem"
+              onClick={() => handleNotificationClick('update')}
+              style={{ color: activeNotification === 'update' ? 'blue' : 'inherit' }}
+            >
+              <IoSettingsSharp className="notificationIcon" style={{ color: activeNotification === 'update' ? 'blue' : 'inherit' }} />
               <div className="notificationContent">
                 <span className="notificationText">System update available</span>
                 <span className="notificationTime">10 mins ago</span>
               </div>
             </div>
-            <div className="notificationItem">
-              <IoHelpCircleSharp className="notificationIcon" />
+            <div
+              className="notificationItem"
+              onClick={() => handleNotificationClick('maintenance')}
+              style={{ color: activeNotification === 'maintenance' ? 'blue' : 'inherit' }}
+            >
+              <IoHelpCircleSharp className="notificationIcon" style={{ color: activeNotification === 'maintenance' ? 'blue' : 'inherit' }} />
               <div className="notificationContent">
                 <span className="notificationText">Scheduled maintenance at 2:00 AM</span>
                 <span className="notificationTime">1 hour ago</span>
               </div>
             </div>
-            {/* Add more notifications as needed */}
           </div>
         )}
         <div className="headerMain-accountMenu" onClick={toggleDropdown}>
-          <CgProfile style={{color:"white"}} className="headerMain-profileImage" />
-
+          <MdOutlinePersonAddAlt 
+            className='iconforPersonalInformation'
+            style={{ color: activePersonal ? 'rgb(0, 200, 255)' : 'white' }} 
+          />
         </div>
         {dropdownVisible && (
           <div className="dropdownMenuHeader" ref={dropdownRef}>

@@ -4,6 +4,7 @@ import TopBar from './component/TopBar';
 import HeaderMain from './component/Header';
 import DashboardContainer from './component/DashboardContainer'; 
 import DepartmentContainer from './component/DepartmentContainer'; // Create this component
+import DoctorContainer from './component/DoctorContainer';
 
 const MedicalHome = () => {
     const [sidebarVisible, setSidebarVisible] = useState(true);
@@ -26,6 +27,7 @@ const MedicalHome = () => {
                     <TopBar sidebarVisible={sidebarVisible} toggleSidebar={toggleSidebar} selectedMenuItem={selectedMenuItem} />
                     {selectedMenuItem === 'Home' && <DashboardContainer />}
                     {selectedMenuItem === 'Department' && <DepartmentContainer />}
+                    {selectedMenuItem==='Doctor'&&<DoctorContainer/>}
                 </div>
             </div>
         </div>
